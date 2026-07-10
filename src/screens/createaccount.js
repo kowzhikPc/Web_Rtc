@@ -10,9 +10,11 @@ import {
     Platform,
     StyleSheet,
     ScrollView,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Alert
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import axios from 'axios';
 
 const imgbg = require('../../src/assets/crateaccountbg.png');
 const backArrow = require('../../src/assets/back_arrow.png');
@@ -30,6 +32,34 @@ export default function CreateAccountScreen({ navigation }) {
     const [password, setPassword] = useState('');
     const [secureTextEntry, setSecureTextEntry] = useState(true);
 
+    const handleSignup = async () => {
+        console.log("Button pressed");
+
+        try {
+            navigation.navigate("main");
+            console.log("Sending request...");
+
+            //const response = await axios.post(
+            //    'http://192.168.1.34:5000/login',
+            //    {
+            //       email,
+            //        password,
+            //    }
+           // );
+
+            console.log("Success", response.data);
+            navigation.navigate("main");
+        } catch (error) {
+            console.log("===== CATCH =====");
+            console.log(error.response?.status);
+            console.log(error.response?.data);
+
+            //Alert.alert(
+            //    "Login Failed",
+            //    "Invalid email or password"
+            //);
+        }
+    };
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -110,10 +140,7 @@ export default function CreateAccountScreen({ navigation }) {
                         style={styles.signupButtonGradient}
                     >
                         <Pressable
-                            onPress={() => {
-                                console.log("Signup clicked with:", email, phone, password);
-                                alert("Signup pressed!");
-                            }}
+                            onPress={handleSignup}
                             style={styles.signupButton}
                         >
                             <Text style={styles.signupButtonText}>Signup</Text>
@@ -140,7 +167,7 @@ export default function CreateAccountScreen({ navigation }) {
             />
         </KeyboardAvoidingView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
